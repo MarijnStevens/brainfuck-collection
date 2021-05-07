@@ -1,0 +1,52 @@
+(C) Copyright Tritonio
+
+Memory efficient Brainfuck tables
+
+Here is a nice way to implement an indexed table in Brainfuck, using only n+4 memory for n table cells. I will soon release a new version of FBF that uses this implementation instead of the old one which used 2*n+3. (Well maybe not... I am bored...)
+
+The table has the following structure:
+
+0 I I D (0) (1) (2) (3) ...
+^
+
+For a table with n cells you will need n+4 cells on the Brainfuck array.
+( n <= cell size) We start from where the ^ points. The first cell should be empty (zero). The second and third cells contain the index that we want to write to or read from. The fourth cell contains the data that we want to store in the table. If don't want to read from the table then we should leave this cell empty and it will later carry the read data. The next cells (0) (1) ... (n-1) are the actual data stored in the table. We'll call the I I D part the "head". It works like this: Move the head to the right place: (the head moves to the right by moving the data of the next cell to the head's preceding empty cell, then moving each of the I I D cells one place to the right creating a new empty preceding cell.)
+
+We will move the head to the right to the correct index:
+>[
+>>>[-<<<<+>>>>]
+<
+If we want to write something then we should carry the D cell too: [->+<]
+<[->+<]
+<[->+<]
+>-]
+
+Now we may read:
+>>>[-<+<<+>>>]<<<[->>>+<<<]>
+Or we may write:
+>>>[-]<[->+<]<
+
+Now we will return the head to it's initial position:
+[
+[-<+>]
+If we have read something then we need to carry the D cell too: >[-<+>]<
+<<<[->>>>+<<<<]
+>>-]
+<<
+
+After a successful read the I I cells should be empty while the D cell will hold the read data.
+After a successful write the I I D cell should be empty.
+
+The pointer ends at the some place where it was before we used the algorithm, that is to the left if the first I cell.
+
+Here is the code uncommented:
+
+Write:
+>[>>>[-<<<<+>>>>]<[->+<]<[->+<]<[->+<]>-]
+>>>[-]<[->+<]<
+[[-<+>]<<<[->>>>+<<<<]>>-]<<
+
+Read:
+>[>>>[-<<<<+>>>>]<<[->+<]<[->+<]>-]
+>>>[-<+<<+>>>]<<<[->>>+<<<]>
+[[-<+>]>[-<+>]<<<<[->>>>+<<<<]>>-]<<

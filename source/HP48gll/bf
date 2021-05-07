@@ -1,0 +1,73 @@
+BF:
+
+<< -> X D p
+        << "" 'O' STO D 'M' STO p 'P' STO 1 'c' STO X SIZE 'S' STO
+        WHILE c X SIZE <=
+        REPEAT
+                X c c SUB 'l' STO
+                IF l "+" == THEN
+                        M P 1 LEA M STO
+                END
+                IF l "-" == THEN
+                        M P -1 LEA M STO
+                END
+                IF l ">" == THEN
+                        1 'P' STO+
+                        IF M SIZE P < THEN
+                                M 0 AUGMENT 'M' STO
+                        END
+                END
+                IF l "<" == THEN
+                        -1 'P' STO+
+                        IF P 1 < THEN
+                                X P c 515 DOERR
+                        END
+                END
+                IF l "." == THEN
+                        O M P GET CHR AUGMENT 'O' STO
+                END
+                IF l "," == THEN
+                        "Input" "" INPUT NUM 't' STO M P t PUT 'M' STO
+                END
+                IF L "[" == THEN
+                        c 'q' STO 1 'b' STO 1 'c' STO+
+                        DO
+                                X c c SUB 'l' STO 1 'c' STO+
+                                IF 'l' "[" == THEN
+                                        1 'b' STO+
+                                END
+                                IF 'l' "]" == THEN
+                                        -1 'b' STO+
+                                END
+                        UNTIL b 0 ==
+                        END
+                        X q 1 + c 2 - SUB 'K' STO
+                        Z c AUGMENT 'Z' STO
+                        WHILE M P GET 0 > REPEAT
+                                K M P BF 'R' STO
+                                R 2 GET 'M' STO R 3 GET 'P' STO
+                        END
+                        Z Z SIZE GET 1 - 'c' STO
+                END
+                1 'c' STO+
+        END
+        { } O AUGMENT 0 AUGMENT 2 M PUT P AUGMENT
+        {b q t l R} PURGE
+        >>
+>>
+
+LEA:
+
+<<  -> X Y Z
+        << X Y X Y GET Z + PUT
+        >>
+>>
+
+BFI:
+
+<< -> X
+        << { } 'Z' STO
+        X { 0 } 1 BF 1 GET
+        { Z O c M K S P } PURGE
+        >>
+>>

@@ -1,0 +1,2 @@
+EOF returns 0:
+,[.,]

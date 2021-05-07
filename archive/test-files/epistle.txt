@@ -1,0 +1,29 @@
+The Epistle to the Implementors.
+
+1. Daniel Cristofani to those who implement the brainfuck language, greetings.
+
+2. The brainfuck language is among the simplest in existence, which lulls the unwary implementor to overconfidence; for language implementation always calls for some care, and brainfuck implementation has a few wrinkles mentioned neither in the original documents of Urban Müller, nor in the excellent pages of Brian Raiter; and some issues which are mentioned there are often ignored, or perhaps the documents are not read.
+
+3. The end of a line of text is represented differently on different platforms, and in different programming environments on the same platform. ASCII specifies only that ten represents a "line feed" and thirteen a "carriage return", so some systems use one, some the other, some both of them together.
+Most brainfuck programs, including Urban Müller's programs, use a ten alone. For the sake of consistency, all brainfuck implementations should, as their default behavior, ensure both that brainfuck programs receive only a ten when an end-of-line is input, and that an end-of-line is output when a brainfuck program outputs a ten.
+A really full-featured implementation would also provide an option to turn off any such filtration, for programs that do binary i/o.
+
+4. The end of input, or end-of-file (EOF), is a similar but less tractable problem. How the user conveys it depends on the environment. More importantly, there is no consensus about what to do when executing a , command after the end of input: some implementations set the cell at the pointer to 0; some set it to -1 (or the unsigned equivalent); and some leave its value unchanged.
+The last of these has several advantages: brainfuck programs can easily be made to accept it as well as one of the others, simply by setting the cell to 0 or -1 immediately before the , command; for the input command to do nothing, when there is no input left, seems somehow cleaner and less arbitrary than to store a stipulated value; and it is the natural behavior for tiny low-level implementations, the kind for which brainfuck was originally designed.
+Still, arguments can be made for the other two behaviors as well, and a full-featured implementation should probably give all three as options. Every implementation should at the very least do one of the three, at least on the first read after input is exhausted.
+
+5. Characters in brainfuck source other than the commands +,-.<>[] are comments, not errors; implementations should ignore them.
+Two additional hacks are somewhat sanctioned by tradition: # for "print state for debugging" and ! for "separate brainfuck code from its input" (for brainfuck interpreters in brainfuck or other single-input-stream languages). These special characters should not be multiplied unnecessarily.
+
+6. Extending the brainfuck language is like bolting parts to a skateboard in an attempt to build a pickup truck. Nonetheless it is a popular activity and will probably remain so. Some more interesting projects use brainfuck as a testbed for programming constructs. Others remove or combine commands, sacrificing symmetry or simplicity. At a minimum, all these efforts should be given names clearly distinct from 'brainfuck' or any euphemism for it.
+
+7. The array should have at least 30,000 cells, if possible.
+The pointer should start at the left end.
+The > and < commands need not be equally numerous within balanced [].
+Output should be in a monospaced font.
+Ideally, i/o should be done during execution, so interactive programs work.
+Matching [] before execution is fastest, as are Frans Faase's [] semantics.
+
+8. You might try programming in brainfuck, if you haven't. Anyway, peace be with you.
+
+-Daniel B Cristofani (cristofdathevanetdotcom) 
