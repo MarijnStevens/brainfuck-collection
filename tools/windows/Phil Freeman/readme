@@ -1,0 +1,22 @@
+ Brainf*** .NET Compiler
+I've been experimenting for the last couple of days with creation of executables in C# using the Reflection.Emit namespace.
+
+As a first project, I've created a small compiler for the Brainf*** language in C#. The code's provided at the bottom of the page as a simple example of IL generation in C#. The code is freely redistributable.
+
+The parser is a simple stack-based parser. All characters other than the eight BF command characters are ignored.
+
+I've tested it with Hello World and a few numerical examples, as well as Frans Fasse's self-interpreter, all of which seem to compile and work correctly. Please use the comments area to report any bugs.
+
+After compilation, a BF program stored in a text file can be compiled from the command line with the command
+
+    bf.exe <input file> <output filename> <tape size>
+
+where the last parameter is the size of the BF tape required to execute the program (implemented for now as a fixed-length array after compilation).
+
+For example,
+
+    bf.exe hello.bf hello.exe 1024
+
+will compile the source in hello.bf with a tape of 1024 integers to hello.exe.
+
+Enjoy!
